@@ -1,5 +1,7 @@
+// Imports the necessary library
 const mysql = require('mysql');
 
+// Creates a connection item for the database created by the schema
 const connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
@@ -8,12 +10,14 @@ const connection = mysql.createConnection({
   database: 'employee_db',
 });
 
+// Connects and logs errors if they occur
 connection.connect((err) => {
   if (err) {
     console.error(`error connecting: ${err.stack}`);
     return;
   }
-  console.log(`connected as id ${connection.threadId}`);
+  // The next line is commented out to keep it from interfering with the UI
+  // console.log(`connected as id ${connection.threadId}`);
 });
 
 module.exports = connection;
