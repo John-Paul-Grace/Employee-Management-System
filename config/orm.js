@@ -6,38 +6,39 @@ const orm = {
     // Function to perform a select query
     select(whatToSelect, tableInput, cb) {
         const queryString = 'SELECT ?? FROM ??';
+
         connection.query(queryString, [whatToSelect, tableInput], (err, result) => {
             if (err) throw err;
             cb(result);
         });
     },
     // Function to perform an insert query
-    add(whatToAdd, tableInput, cb) {
-        const queryString = 'INSERT INTO ?? VALUES ?';
+    add(whatToAdd, columnsToChange, tableInput, cb) {
+        const queryString = 'INSERT INTO ?? (??) VALUES (?)';
 
-        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+        connection.query(queryString, [tableInput, columnsToChange, whatToAdd], (err, result) => {
             if (err) throw err;
             cb(result);
         });
     },
     // Function to perform a delete query
-    /* remove(whatToAdd, tableInput, cb) {
-        const queryString = 'INSERT INTO ?? VALUES ?';
+    remove(whatToRemove, column, tableInput, cb) {
+        const queryString = 'DELETE FROM ?? WHERE ?? = ?';
 
-        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+        connection.query(queryString, [tableInput, column, whatToRemove], (err, result) => {
             if (err) throw err;
             cb(result);
         });
-    }, */
+    },
     // Function to perform an update query
-    /* update(whatToAdd, tableInput, cb) {
-        const queryString = 'INSERT INTO ?? VALUES ?';
+    update(column, updatedInfo, currentInfo, tableInput, cb) {
+        const queryString = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
 
-        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+        connection.query(queryString, [tableInput, column, updatedInfo, column, currentInfo], (err, result) => {
             if (err) throw err;
             cb(result);
         });
-    }, */
+    },
     // Function that closes the connection
     end() {
         connection.end();

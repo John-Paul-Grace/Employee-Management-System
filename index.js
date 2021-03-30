@@ -7,18 +7,27 @@ const questions = require('./lib/questions');
 // Functions for department management
 // =========================================================================
 function addDepartment() {
-    console.log('Add department');
-    departmentMenu();
-}
-
-function updateDepartment() {
-    console.log('Update department');
-    departmentMenu();
+    inquirer.prompt(questions.departmentInput).then((res) => {
+        orm.add(res.name, 'name', 'departments', () => {
+            departmentMenu();
+        });
+    });
 }
 
 function removeDepartment() {
-    console.log('Remove department');
-    departmentMenu();
+    inquirer.prompt(questions.departmentInput).then((res) => {
+        orm.remove(res.name, 'name', 'departments', () => {
+            departmentMenu();
+        });
+    });
+}
+
+function updateDepartment() {
+    inquirer.prompt(questions.departmentUpdate).then((res) => {
+        orm.update('name', res.newName, res.currentName, 'departments', () => {
+            departmentMenu();
+        });
+    });
 }
 // =========================================================================
 
@@ -65,8 +74,33 @@ function departmentMenu() {
 
 // Runs menu for role options
 function roleMenu() {
-    console.log('Role');
-    mainMenu();
+    inquirer.prompt(questions.departmentMenu).then((res) => {
+        switch (res.choice) {
+            case "View all departments":
+                // Logs an array of all department names
+                orm.select('name', 'departments', (result) => {
+                    console.table(result);
+                    departmentMenu();
+                });
+                break;
+
+            case "Add department":
+                addDepartment();
+                break;
+
+            case "Update department":
+                updateDepartment();
+                break;
+
+            case "Remove department":
+                removeDepartment();
+                break;
+
+            case "Back":
+                mainMenu();
+                break;
+        }
+    });
 }
 
 // Runs menu for employee options
