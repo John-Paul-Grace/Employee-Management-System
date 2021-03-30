@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const orm = require('./config/orm');
-const questions = require('./config/questions');
+const questions = require('./lib/questions');
 
 // Functions for department management
 // =========================================================================
@@ -20,6 +20,16 @@ function removeDepartment() {
     console.log('Remove department');
     departmentMenu();
 }
+// =========================================================================
+
+// Functions for role management
+// =========================================================================
+
+// =========================================================================
+
+// Functions for employee management
+// =========================================================================
+
 // =========================================================================
 
 // Runs menu for department options

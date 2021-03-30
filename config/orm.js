@@ -11,6 +11,33 @@ const orm = {
             cb(result);
         });
     },
+    // Function to perform an insert query
+    add(whatToAdd, tableInput, cb) {
+        const queryString = 'INSERT INTO ?? VALUES ?';
+
+        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+            if (err) throw err;
+            cb(result);
+        });
+    },
+    // Function to perform a delete query
+    /* remove(whatToAdd, tableInput, cb) {
+        const queryString = 'INSERT INTO ?? VALUES ?';
+
+        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+            if (err) throw err;
+            cb(result);
+        });
+    }, */
+    // Function to perform an update query
+    /* update(whatToAdd, tableInput, cb) {
+        const queryString = 'INSERT INTO ?? VALUES ?';
+
+        connection.query(queryString, [tableInput, whatToAdd], (err, result) => {
+            if (err) throw err;
+            cb(result);
+        });
+    }, */
     // Function that closes the connection
     end() {
         connection.end();
