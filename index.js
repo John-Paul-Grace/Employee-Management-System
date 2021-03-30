@@ -114,7 +114,12 @@ function viewEmployeesByRole() {
 }
 
 function viewEmployeesByManager() {
-
+    inquirer.prompt(questions.askManagerId).then(({id}) => {
+        orm.selectWhere(['id', 'first_name', 'last_name', 'role_id', 'manager_id'], 'manager_id', id, 'employees', (result) => {
+            console.table(result);
+            employeeMenu();
+        });
+    });
 }
 
 function addEmployee() {
