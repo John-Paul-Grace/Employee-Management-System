@@ -40,10 +40,10 @@ const orm = {
         });
     },
     // Function to perform an update query
-    update(column, updatedInfo, currentInfo, tableInput, cb) {
+    update(updateColumn, newInfo, searchColumn, searchInfo, tableInput, cb) {
         const queryString = 'UPDATE ?? SET ?? = ? WHERE ?? = ?';
 
-        connection.query(queryString, [tableInput, column, updatedInfo, column, currentInfo], (err, result) => {
+        connection.query(queryString, [tableInput, updateColumn, newInfo, searchColumn, searchInfo], (err, result) => {
             if (err) throw err;
             cb(result);
         });

@@ -31,7 +31,7 @@ function removeDepartment() {
 
 function updateDepartment() {
     inquirer.prompt(questions.departmentUpdate).then(({newName, currentName}) => {
-        orm.update('name', newName, currentName, 'departments', () => {
+        orm.update('name', newName, 'name', currentName, 'departments', () => {
             departmentMenu();
         });
     });
@@ -65,7 +65,7 @@ function addRole() {
 }
 
 function removeRole() {
-    inquirer.prompt(questions.askRoleName).then(({title}) => {
+    inquirer.prompt(questions.askRoleTitle).then(({title}) => {
         orm.remove(title, 'title', 'roles', () => {
             roleMenu();
         });
@@ -73,7 +73,13 @@ function removeRole() {
 }
 
 function updateRole() {
-    
+    inquirer.prompt(questions.askRoleTitle).then(({title}) => {
+        inquirer.prompt(questions.updateRole).then(({column, newInfo}) => {
+            orm.update(column, newInfo, 'title', title, 'roles', () => {
+                roleMenu();
+            });
+        });
+    });
 }
 // =========================================================================
 
