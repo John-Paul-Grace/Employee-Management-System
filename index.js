@@ -46,8 +46,8 @@ function departmentMenu() {
     inquirer.prompt(questions.departmentMenu).then((res) => {
         switch (res.choice) {
             case "View all departments":
-                // Logs an array of all department names
-                orm.select('name', 'departments', (result) => {
+                // Logs a table of all department info
+                orm.select(['id', 'name'], 'departments', (result) => {
                     console.table(result);
                     departmentMenu();
                 });
@@ -57,12 +57,12 @@ function departmentMenu() {
                 addDepartment();
                 break;
 
-            case "Update department":
-                updateDepartment();
-                break;
-
             case "Remove department":
                 removeDepartment();
+                break;
+
+            case "Update department":
+                updateDepartment();
                 break;
 
             case "Back":
@@ -74,26 +74,35 @@ function departmentMenu() {
 
 // Runs menu for role options
 function roleMenu() {
-    inquirer.prompt(questions.departmentMenu).then((res) => {
+    inquirer.prompt(questions.roleMenu).then((res) => {
         switch (res.choice) {
-            case "View all departments":
-                // Logs an array of all department names
-                orm.select('name', 'departments', (result) => {
+            case "View all roles":
+                // Logs a table of all role information
+                orm.select(['id', 'title', 'salary', 'department_id'], 'roles', (result) => {
                     console.table(result);
-                    departmentMenu();
+                    roleMenu();
                 });
                 break;
 
-            case "Add department":
+            case "View all roles by department":
+                inquirer.prompt(questions.askDepartmentID).then((res) => {
+                    orm.selectWhere(['id', 'title', 'salary', 'department_id'], 'department_id', res.id, 'roles', (result) => {
+                        console.table(result);
+                        roleMenu();
+                    });
+                });
+                break;
+
+            case "Add role":
                 addDepartment();
                 break;
 
-            case "Update department":
+            case "Update role":
                 updateDepartment();
                 break;
 
-            case "Remove department":
-                removeDepartment();
+            case "Remove role":
+                remove();
                 break;
 
             case "Back":

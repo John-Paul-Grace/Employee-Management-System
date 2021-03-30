@@ -12,6 +12,15 @@ const orm = {
             cb(result);
         });
     },
+    // Function to perform a select-where query
+    selectWhere(whatToSelect, column, searchInfo, tableInput, cb) {
+        const queryString = 'SELECT ?? FROM ?? WHERE ?? = ?';
+
+        connection.query(queryString, [whatToSelect, tableInput, column, searchInfo], (err, result) => {
+            if (err) throw err;
+            cb(result);
+        });
+    },
     // Function to perform an insert query
     add(whatToAdd, columnsToChange, tableInput, cb) {
         const queryString = 'INSERT INTO ?? (??) VALUES (?)';
