@@ -48,8 +48,8 @@ function viewAllRoles() {
 }
 
 function viewRolesByDepartment() {
-    inquirer.prompt(questions.askDepartmentID).then((res) => {
-        orm.selectWhere(['id', 'title', 'salary', 'department_id'], 'department_id', res.id, 'roles', (result) => {
+    inquirer.prompt(questions.askDepartmentID).then(({id}) => {
+        orm.selectWhere(['id', 'title', 'salary', 'department_id'], 'department_id', id, 'roles', (result) => {
             console.table(result);
             roleMenu();
         });
@@ -85,13 +85,35 @@ function updateRole() {
 
 // Functions for employee management
 // =========================================================================
+function viewAllEmployees() {
 
+}
+
+function viewEmployeesByRole() {
+    
+}
+
+function viewEmployeesByManager() {
+
+}
+
+function addEmployee() {
+    
+}
+
+function removeEmployee() {
+    
+}
+
+function updateEmployee() {
+
+}
 // =========================================================================
 
 // Runs menu for department options
 function departmentMenu() {
-    inquirer.prompt(questions.departmentMenu).then((res) => {
-        switch (res.choice) {
+    inquirer.prompt(questions.departmentMenu).then(({choice}) => {
+        switch (choice) {
             case "View all departments":
                 viewDepartments();
                 break;
@@ -117,8 +139,8 @@ function departmentMenu() {
 
 // Runs menu for role options
 function roleMenu() {
-    inquirer.prompt(questions.roleMenu).then((res) => {
-        switch (res.choice) {
+    inquirer.prompt(questions.roleMenu).then(({choice}) => {
+        switch (choice) {
             case "View all roles":
                 viewAllRoles();
                 break;
@@ -148,14 +170,43 @@ function roleMenu() {
 
 // Runs menu for employee options
 function employeeMenu() {
-    console.log('Employee');
-    mainMenu();
+    inquirer.prompt(questions.employeeMenu).then(({choice}) => {
+        switch (choice) {
+            case "View all employees":
+                viewAllEmployees();
+                break;
+
+            case "View all employees by role":
+                viewEmployeesByRole();
+                break;
+
+            case "View all employees by manager":
+                viewEmployeesByManager();
+                break;
+
+            case "Add employee":
+                addEmployee();
+                break;
+
+            case "Remove employee":
+                removeEmployee();
+                break;
+
+            case "Update employee":
+                updateEmployee();
+                break;
+
+            case "Back":
+                mainMenu();
+                break;
+        }
+    });
 }
 
 // Creates main menu with options to access other menus
 function mainMenu() {
-    inquirer.prompt(questions.mainMenu).then((res) => {
-        switch (res.choice) {
+    inquirer.prompt(questions.mainMenu).then(({choice}) => {
+        switch (choice) {
             case "Manage departments":
                 departmentMenu();
                 break;
