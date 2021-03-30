@@ -65,7 +65,7 @@ function addRole() {
 }
 
 function removeRole() {
-    inquirer.prompt(questions.askRoleTitle).then(({title}) => {
+    inquirer.prompt(questions.roleInput[0]).then(({title}) => {
         orm.remove(title, 'title', 'roles', () => {
             roleMenu();
         });
@@ -73,7 +73,7 @@ function removeRole() {
 }
 
 function updateRole() {
-    inquirer.prompt(questions.askRoleTitle).then(({title}) => {
+    inquirer.prompt(questions.roleInput[0]).then(({title}) => {
         inquirer.prompt(questions.updateRole).then(({column, newInfo}) => {
             orm.update(column, newInfo, 'title', title, 'roles', () => {
                 roleMenu();
@@ -86,11 +86,19 @@ function updateRole() {
 // Functions for employee management
 // =========================================================================
 function viewAllEmployees() {
-
+    orm.select(['id', 'first_name', 'last_name', 'role_id', 'manager_id'], 'employees', (result) => {
+        console.table(result);
+        employeeMenu();
+    });
 }
 
 function viewEmployeesByRole() {
-    
+    inquirer.prompt(questions.askRoleId).then(({id}) => {
+        orm.selectWhere(['id', 'first_name', 'last_name', 'role_id', 'manager_id'], 'role_id', id, 'employees', (result) => {
+            console.table(result);
+            employeeMenu();
+        });
+    });
 }
 
 function viewEmployeesByManager() {
