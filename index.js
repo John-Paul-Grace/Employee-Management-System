@@ -30,7 +30,7 @@ function removeDepartment() {
                 });
             });
         } else {
-            roleMenu();
+            departmentMenu();
         }
     });
 }
@@ -125,7 +125,7 @@ function viewEmployeesByManager() {
 function addEmployee() {
     inquirer.prompt(questions.employeeInput).then(({firstName, lastName, roleId, managerId}) => {
         const managerIdToAdd = managerId ? managerId : null;
-        
+
         orm.add([firstName, lastName, roleId, managerIdToAdd], ['first_name', 'last_name', 'role_id', 'manager_id'], 'employees', () => {
             employeeMenu();
         });
@@ -133,7 +133,17 @@ function addEmployee() {
 }
 
 function removeEmployee() {
-    
+    inquirer.prompt(questions.confirm).then(({confirm}) => {
+        if (confirm) {
+            inquirer.prompt(questions.askEmployeeId).then(({id}) => {
+                orm.remove(id, 'id', 'employees', () => {
+                    employeeMenu();
+                });
+            });
+        } else {
+            employeeMenu();
+        }
+    });
 }
 
 function updateEmployee() {
