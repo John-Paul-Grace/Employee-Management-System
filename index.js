@@ -22,10 +22,16 @@ function addDepartment() {
 }
 
 function removeDepartment() {
-    inquirer.prompt(questions.departmentInput).then(({name}) => {
-        orm.remove(name, 'name', 'departments', () => {
-            departmentMenu();
-        });
+    inquirer.prompt(questions.confirm).then(({confirm}) => {
+        if (confirm) {
+            inquirer.prompt(questions.departmentInput).then(({name}) => {
+                orm.remove(name, 'name', 'departments', () => {
+                    departmentMenu();
+                });
+            });
+        } else {
+            roleMenu();
+        }
     });
 }
 
@@ -65,10 +71,16 @@ function addRole() {
 }
 
 function removeRole() {
-    inquirer.prompt(questions.roleInput[0]).then(({title}) => {
-        orm.remove(title, 'title', 'roles', () => {
+    inquirer.prompt(questions.confirm).then(({confirm}) => {
+        if (confirm) {
+            inquirer.prompt(questions.roleInput[0]).then(({title}) => {
+                orm.remove(title, 'title', 'roles', () => {
+                    roleMenu();
+                });
+            });
+        } else {
             roleMenu();
-        });
+        }
     });
 }
 
