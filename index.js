@@ -123,7 +123,11 @@ function viewEmployeesByManager() {
 }
 
 function addEmployee() {
-    
+    inquirer.prompt(questions.employeeInput).then(({firstName, lastName, roleId, managerId}) => {
+        orm.add([firstName, lastName, roleId, managerId], ['first_name', 'last_name', 'role_id', 'manager_id'], 'employees', () => {
+            employeeMenu();
+        });
+    });
 }
 
 function removeEmployee() {
