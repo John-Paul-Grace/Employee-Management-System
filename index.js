@@ -6,25 +6,32 @@ const questions = require('./lib/questions');
 
 // Functions for department management
 // =========================================================================
+function viewDepartments() {
+    orm.select(['id', 'name'], 'departments', (result) => {
+        console.table(result);
+        departmentMenu();
+    });
+}
+
 function addDepartment() {
-    inquirer.prompt(questions.departmentInput).then((res) => {
-        orm.add(res.name, 'name', 'departments', () => {
+    inquirer.prompt(questions.departmentInput).then(({name}) => {
+        orm.add(name, 'name', 'departments', () => {
             departmentMenu();
         });
     });
 }
 
 function removeDepartment() {
-    inquirer.prompt(questions.departmentInput).then((res) => {
-        orm.remove(res.name, 'name', 'departments', () => {
+    inquirer.prompt(questions.departmentInput).then(({name}) => {
+        orm.remove(name, 'name', 'departments', () => {
             departmentMenu();
         });
     });
 }
 
 function updateDepartment() {
-    inquirer.prompt(questions.departmentUpdate).then((res) => {
-        orm.update('name', res.newName, res.currentName, 'departments', () => {
+    inquirer.prompt(questions.departmentUpdate).then(({newName, currentName}) => {
+        orm.update('name', newName, currentName, 'departments', () => {
             departmentMenu();
         });
     });
@@ -33,7 +40,37 @@ function updateDepartment() {
 
 // Functions for role management
 // =========================================================================
+function viewAllRoles() {
+    orm.select(['id', 'title', 'salary', 'department_id'], 'roles', (result) => {
+        console.table(result);
+        roleMenu();
+    });
+}
 
+function viewRolesByDepartment() {
+    inquirer.prompt(questions.askDepartmentID).then((res) => {
+        orm.selectWhere(['id', 'title', 'salary', 'department_id'], 'department_id', res.id, 'roles', (result) => {
+            console.table(result);
+            roleMenu();
+        });
+    });
+}
+
+function addRole() {
+    inquirer.prompt(questions.roleInput).then(({name, salary, departmentId}) => {
+        orm.add([name, salary, departmentId], ['title', 'salary', 'department_id'], 'roles', () => {
+            roleMenu();
+        });
+    });
+}
+
+function removeRole() {
+    
+}
+
+function updateRole() {
+    
+}
 // =========================================================================
 
 // Functions for employee management
@@ -46,11 +83,7 @@ function departmentMenu() {
     inquirer.prompt(questions.departmentMenu).then((res) => {
         switch (res.choice) {
             case "View all departments":
-                // Logs a table of all department info
-                orm.select(['id', 'name'], 'departments', (result) => {
-                    console.table(result);
-                    departmentMenu();
-                });
+                viewDepartments();
                 break;
 
             case "Add department":
@@ -77,32 +110,23 @@ function roleMenu() {
     inquirer.prompt(questions.roleMenu).then((res) => {
         switch (res.choice) {
             case "View all roles":
-                // Logs a table of all role information
-                orm.select(['id', 'title', 'salary', 'department_id'], 'roles', (result) => {
-                    console.table(result);
-                    roleMenu();
-                });
+                viewAllRoles();
                 break;
 
             case "View all roles by department":
-                inquirer.prompt(questions.askDepartmentID).then((res) => {
-                    orm.selectWhere(['id', 'title', 'salary', 'department_id'], 'department_id', res.id, 'roles', (result) => {
-                        console.table(result);
-                        roleMenu();
-                    });
-                });
+                viewRolesByDepartment();
                 break;
 
             case "Add role":
-                addDepartment();
-                break;
-
-            case "Update role":
-                updateDepartment();
+                addRole();
                 break;
 
             case "Remove role":
-                remove();
+                removeRole();
+                break;
+
+            case "Update role":
+                updateRole();
                 break;
 
             case "Back":
