@@ -147,7 +147,13 @@ function removeEmployee() {
 }
 
 function updateEmployee() {
-
+    inquirer.prompt(questions.askEmployeeId).then(({id}) => {
+        inquirer.prompt(questions.updateEmployee).then(({column, newInfo}) => {
+            orm.update(column, newInfo, 'id', id, 'employees', () => {
+                employeeMenu();
+            });
+        });
+    });
 }
 // =========================================================================
 
