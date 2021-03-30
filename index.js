@@ -57,15 +57,19 @@ function viewRolesByDepartment() {
 }
 
 function addRole() {
-    inquirer.prompt(questions.roleInput).then(({name, salary, departmentId}) => {
-        orm.add([name, salary, departmentId], ['title', 'salary', 'department_id'], 'roles', () => {
+    inquirer.prompt(questions.roleInput).then(({title, salary, departmentId}) => {
+        orm.add([title, salary, departmentId], ['title', 'salary', 'department_id'], 'roles', () => {
             roleMenu();
         });
     });
 }
 
 function removeRole() {
-    
+    inquirer.prompt(questions.askRoleName).then(({title}) => {
+        orm.remove(title, 'title', 'roles', () => {
+            roleMenu();
+        });
+    });
 }
 
 function updateRole() {
